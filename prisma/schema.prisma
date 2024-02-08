@@ -1,0 +1,46 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id       String  @id @map("_id") @default(cuid())
+  email    String  @unique
+  username String  @unique
+  password String
+  likes    Int @default(0)
+  dislikes Int @default(0)
+  createdAt Int
+}
+
+model Film {
+  id          String    @id @map("_id") @default(cuid())
+  title       String
+  description String
+  url         String
+  image       String
+  likes       Int @default(0)
+  dislikes    Int @default(0)
+  categories  CategoryFilm[]
+}
+
+model Category {
+  id     String      @id @map("_id") @default(cuid())
+  name   String
+  films  CategoryFilm[]
+}
+
+model CategoryFilm {
+  id        String @id @map("_id") @default(cuid())
+  film      Film     @relation(fields: [filmId], references: [id])
+  filmId    String
+  category  Category @relation(fields: [categoryId], references: [id])
+  categoryId String
+
+  @@index([filmId], name: "film_id_index")
+  @@index([categoryId], name: "category_id_index")
+}
