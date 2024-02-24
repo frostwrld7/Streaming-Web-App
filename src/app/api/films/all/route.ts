@@ -1,12 +1,19 @@
 import { NextResponse } from 'next/server';
-import { hash } from 'bcrypt';
-import UserModel from '@/models/User.model';
-import FilmModel from '@/models/Film.model';
+import prisma from '@/utils/prismaClient';
+import type { NextApiRequest, NextApiResponse } from 'next'
+import { getServerSession } from 'next-auth';
 
-export async function GET(request: Request) {
+
+export async function GET(req: NextApiRequest, res: NextApiResponse) {
   try {
-
-    const film = await FilmModel.find();
+    const session = await getServerSession(req);
+    if (!session) return new Response(JSON.stringify({ error: 'Unauthorized.' }), {
+      status: 401,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const film = await prisma.film.findMany()
     if (film) {
       return new Response(JSON.stringify(film), {
         status: 200,
@@ -25,6 +32,4 @@ export async function GET(request: Request) {
   } catch (e) {
     console.log({ e });
   }
-
-  return NextResponse.json({ message: 'Registered successfully.' });
 }

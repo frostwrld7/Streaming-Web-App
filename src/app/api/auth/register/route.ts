@@ -5,7 +5,8 @@ import prisma from '@/utils/prismaClient';
 
 export async function POST(request: Request) {
   try {
-    const { email, username, password, passwordConfirm } = await request.json();
+    const reqToJSON = request.clone()
+    const { email, username, password, passwordConfirm } = await reqToJSON.json();
 
     if(!email || !username || !password || !passwordConfirm) {
       return new Response(JSON.stringify({ error: 'Certains paramètres sont manquants.' }), {
@@ -17,6 +18,12 @@ export async function POST(request: Request) {
       return new Response(JSON.stringify({ error: 'Les mots de passe ne correspondent pas.' }), {
         status: 400,
       });
+    }
+
+    if (!email.includes('@')) {
+      return new Response(JSON.stringify({ error: 'Le format de l\'email est incorrect.' }), {
+        status: 400
+      })
     }
 
     const hashedPassword = await hash(password, 10);

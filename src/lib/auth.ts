@@ -3,8 +3,9 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 import mongoose, { Model } from 'mongoose';
 import bcrypt from 'bcrypt'
 import { NextAuthOptions, User, getServerSession } from 'next-auth';
-import UserModel from '@/models/User.model';
 import { GetServerSidePropsContext, NextApiRequest, NextApiResponse } from 'next';
+import prisma from '@/utils/prismaClient'
+
 
 export const authConfig: NextAuthOptions = {
     session: {
@@ -27,16 +28,31 @@ export const authConfig: NextAuthOptions = {
                 },
             },
             async authorize(credentials) {
-                if (!credentials || !credentials.username ||!credentials.password) 
+                if (!credentials || !credentials.username ||!credentials.password)
                 return null as unknown as User;
-                const dbUser = await UserModel.findOne({ $or: [{ username: credentials.username }, { email: credentials.username }] })
+                const dbUser = await prisma.user.findFirst(
+                    {
+                      where: {
+                        OR: [
+                          {
+                            username: credentials.username
+                          },
+                          {
+                            email: credentials.username
+                          }
+                        ]
+                      }
+                    }
+                  )
                 if (!dbUser) return null as unknown as User;
-                const passwordMatch = bcrypt.compare(credentials.password, dbUser?.password);
+                const passwordMatch = bcrypt.compare(credentials.password, dbUser?.password as string);
                 if (await passwordMatch) {
                 const dbUserWithoutPassword: Object = {
                     username: dbUser.username,
                     email: dbUser.email,
-                    createdAt: dbUser.createdAt
+                    createdAt: dbUser.createdAt,
+                    likes: dbUser.likes,
+                    dislikes: dbUser.dislikes
                 }
                 return dbUserWithoutPassword as User;
                 }
@@ -47,8 +63,21 @@ export const authConfig: NextAuthOptions = {
             clientId: process.env.GOOGLE_API_CLIENT_ID as string,
             clientSecret: process.env.GOOGLE_API_CLIENT_SECRET as string,
             async profile(profile) {
-                const dbUser = await UserModel.findOne({ $or: [{ username: profile.name }, { email: profile.email }] })
-                if (dbUser) {
+                const dbUser = await prisma.user.findFirst(
+                    {
+                      where: {
+                        OR: [
+                          {
+                            username: profile.name
+                          },
+                          {
+                            email: profile.email
+                          }
+                        ]
+                      }
+                    }
+                  )                
+                  if (dbUser) {
                     return {
                         id: profile.sub,
                         name: profile.name,
@@ -58,13 +87,13 @@ export const authConfig: NextAuthOptions = {
                         image: profile.picture,
                     }
                 }
-                const newUser = new UserModel({
-                    username: profile.name,
-                    email: profile.email,
-                    createdAt: new Date()
-                })
-
-                await newUser.save();
+                await prisma.user.create({
+                    data: {
+                      email: profile.email as string,
+                      username: profile.name as string,
+                      createdAt: Date.now()
+                    }
+                  })
                 return {
                     id: profile.sub,
                     name: profile.name,
@@ -79,7 +108,7 @@ export const authConfig: NextAuthOptions = {
     callbacks: {
         async jwt({ user , token }) {
           if (user) {
-            token.user = {...user}
+            token.user = { ...user }
           }
           return token
          },

@@ -1,28 +1,45 @@
 import { NextResponse } from 'next/server';
-import { hash } from 'bcrypt';
-import UserModel from '@/models/User.model';
-import FilmModel from '@/models/Film.model';
-import randomID from '@/utils/randomID';
+import prisma from '@/utils/prismaClient';
+import { getServerSession } from 'next-auth';
+import { NextApiRequest } from 'next';
+import admins from '@/admins.json' assert { type: 'json' }
 
-export async function POST(request: Request) {
+export async function POST(req: Request) {
   try {
-    const { title, shortDescription, link, category, image } = await request.json();
-    console.log(title, shortDescription, link, category, image);
-    if (!title || !shortDescription || !link || !category || !image) {
-      return new Response(JSON.stringify({ error: 'Certains paramètres sont manquants.' }), {
+    const session = await getServerSession(req as unknown as NextApiRequest);
+    if (!session) return new NextResponse(JSON.stringify({ error: 'Unauthorized.' }), {
+      status: 401,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    if (!admins.includes(session.user.email)) return new NextResponse(JSON.stringify({ error: 'Unauthorized.' }), {
+      status: 401,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const { title, description, url, category, image } = await req.json();
+    if (!title || !description || !url || !category || !image) {
+      return new NextResponse(JSON.stringify({ error: 'Certains paramètres sont manquants.' }), {
         status: 400,
       });
     }
 
-    if (!link.includes('http://') && !link.includes('https://')) {
-      return new Response(JSON.stringify({ error: 'Le lien n\'est pas valide.' }), {
+    if (!url.includes('http://') && !url.includes('https://')) {
+      return new NextResponse(JSON.stringify({ error: 'Le lien du film n\'est pas valide.' }), {
         status: 400,
       });
     }
 
-    const film = await FilmModel.findOne({ title: title });
-    if (film) {
-      return new Response(JSON.stringify({ error: 'Ce film existe déjà.' }), {
+    const existingFilm = await prisma.film.findFirst({
+      where: {
+        title: title
+      }
+    });
+
+    if (existingFilm) {
+      return new NextResponse(JSON.stringify({ error: 'Ce film existe déjà.' }), {
         status: 400,
         headers: {
           'Content-Type': 'application/json',
@@ -30,15 +47,16 @@ export async function POST(request: Request) {
       });
     }
 
-    const newFilm = new FilmModel({
-      title,
-      shortDescription,
-      link,
-      category,
-      image,
-      createdAt: Date.now()
+    await prisma.film.create({
+      data: {
+        title,
+        description,
+        url,
+        category,
+        image,
+      }
     });
-    await newFilm.save();
+
     return new NextResponse(JSON.stringify({ success: 'Film ajouté avec succès.' }), {
       headers: {
         'Content-Type': 'application/json',
@@ -46,7 +64,11 @@ export async function POST(request: Request) {
     });
   } catch (e) {
     console.log({ e });
+    return new NextResponse(JSON.stringify({ error: 'Erreur lors de l\'ajout du film.' }), {
+      status: 500,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
   }
-
-  return NextResponse.json({ message: 'Registered successfully.' });
 }
