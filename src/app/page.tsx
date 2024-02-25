@@ -11,7 +11,7 @@ import deadpool from '@/public/deadpool.jpg'
 
 export default function Home() {
   const session = useSession();
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
   const images = [spiderMan, batMan, thor, deadpool];
 
   useEffect(() => {

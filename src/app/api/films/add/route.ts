@@ -32,10 +32,16 @@ export async function POST(req: Request) {
       });
     }
 
+    if (!image.includes('http://') && !image.includes('https://')) {
+      return new NextResponse(JSON.stringify({ error: 'Le lien de l\'image n\'est pas valide.' }), {
+        status: 400,
+      });
+    }
+
     const existingFilm = await prisma.film.findFirst({
       where: {
-        title: title
-      }
+        title: title,
+      },
     });
 
     if (existingFilm) {

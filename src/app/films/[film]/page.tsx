@@ -27,7 +27,8 @@ export default function Home({ params }: { params: { film: string } }) {
         redirect('/login');
     },
 });
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
   const [filmData, setFilmData] = useState<FilmProps>({
     id: '',
     title: '',
@@ -45,6 +46,7 @@ export default function Home({ params }: { params: { film: string } }) {
     if (session.status === 'loading') {
       return;
     }
+    setIsLoading(true)
     fetch(`/api/films/findById?id=${encodeURIComponent(params.film)}`, {
         method: 'GET',
         headers: {
@@ -63,6 +65,7 @@ export default function Home({ params }: { params: { film: string } }) {
           }).then(async response => {
             if(response.ok) {
             const films = await response.json()
+            setIsLoading(false)
             return setRecommandationsFilms(films.filter((film: FilmProps) => film.id !== filmsFound.id))
             }
           })
@@ -79,11 +82,26 @@ export default function Home({ params }: { params: { film: string } }) {
   }, []);
 
   return (
-    <main className="flex flex-col items-center justify-between min-h-screen p-24 bg-[#111111] h-[600vh]">
+    <main className='flex flex-col items-center justify-between min-h-screen p-24 bg-[#111111] h-[600vh]'>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="preconnect" href="https://fonts.googleapis.com"></link>
     <link rel="preconnect" href="https://fonts.gstatic.com"></link>
     <link href="https://fonts.googleapis.com/css2?family=Lalezar&display=swap" rel="stylesheet"></link>
+      {isLoading && (
+        <>
+      <div className="w-[100%] h-[100vh] flex justify-center items-center h-10 z-10">
+        <div
+      style={{ width: `100px`, height: `100px` }}
+      className="animate-spin">
+      <div className="h-full w-full border-4 border-t-red-500
+       border-b-red-700 rounded-[50%]">
+      </div>
+    </div>
+    <p className="absolute mb-36 text-4xl text-white text-shadow-[0_4px_8px_#000] shadow-black-500/50 font-lalezar">Chargement des ressources en cours...</p>
+  </div>
+  </>
+      )}
+  <div className={`flex flex-col items-center justify-between min-h-screen p-24 bg-[#111111] ${isLoading ? 'opacity-60' : 'opacity-100'}`}>
   <div className="overflow-hidden absolute w-72 top-2 left-2">
     <Image
     src={logo.src}
@@ -95,17 +113,9 @@ export default function Home({ params }: { params: { film: string } }) {
     <a href="/" className="text-white font-lalezar text-4xl relative bottom-[38px] left-14">CinéVerse</a>
   </div>
   <div className="absolute top-4 right-4 hover:scale-110 transition duration-500">
-    {session.status === 'authenticated' ? 
-    (
-      <a href='/profile' className="text-xl font-bold text-white px-2 p-1 font-roboto border-2 border-transparent rounded-xl bg-[#FE0000]">{session.data.user.username.slice(0, 12)}</a>
-    )
-  :
-  (
-    <a href='/login' className="text-xl font-bold text-white px-2 p-1 font-roboto border-2 border-transparent rounded-xl bg-[#FE0000]">Se connecter</a>
-
-  )}
+      <a href='/profile' className="text-xl font-bold text-white px-2 p-1 font-roboto border-2 border-transparent rounded-xl bg-[#FE0000]">{session?.data?.user.username.slice(0, 12)}</a>
   </div>
-  <div className="absolute max-w-sm w-80 lg:w-full border rounded-lg shadow bg-gray-800 border-gray-700">
+  <div className="absolute max-w-sm top-28 w-80 lg:w-full border rounded-lg shadow bg-gray-800 border-gray-700">
     <a href="#">
         <img className="rounded-t-lg h-full max-h-[500px] w-full object-cover object-center" src={filmData.image} alt={filmData.id} />
     </a>
@@ -123,7 +133,7 @@ export default function Home({ params }: { params: { film: string } }) {
     </div>
 </div>
 <iframe className="absolute top-[1120px] w-80 xl:w-[720px] xl:h-[620px] lg:w-[700px] lg:h-[600px] h-full" id={filmData.id} src={filmData.url} frameBorder={0} marginWidth={0} marginHeight={0} scrolling="NO" width={720} height={620} allowFullScreen={true}></iframe>
-          <h2 className="absolute top-[1800px] font-lalezar text-black text-4xl text-white text-center">Voici d'autres titres qui pourraient vous plaire :</h2>
+          <h2 className="absolute top-[1800px] font-lalezar text-black text-4xl text-white text-center mb-4 w-96">Voici d'autres titres qui pourraient vous plaire :</h2>
           <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7 absolute top-[1900px] right-8 left-8">
           {recommandationsFilms.filter((film: FilmProps) => film.id !== filmData.id).map((film, index) => (
             <div
@@ -145,6 +155,7 @@ export default function Home({ params }: { params: { film: string } }) {
               </div>
             </div>
           ))}
+        </div>
         </div>
     </main>
   );

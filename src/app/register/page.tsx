@@ -23,8 +23,8 @@ const [currentImageIndex, setCurrentImageIndex] = useState(0);
     password: "",
     passwordConfirm: "",
   });
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [error, setError] = useState<string>('');
 
 
   useEffect(() => {
@@ -124,6 +124,19 @@ const [currentImageIndex, setCurrentImageIndex] = useState(0);
       <Image src={discordLogo} alt="Discord Logo" width={20} height={20} />
       <span className="ml-4">Continuer avec Discord</span>
     </button>
+    {isLoading && (
+        <>
+      <div className="absolute flex justify-center items-center h-10 z-10">
+        <div
+      style={{ width: `100px`, height: `100px` }}
+      className="animate-spin">
+      <div className="h-full w-[100%] border-4 border-t-red-500
+       border-b-red-700 rounded-[50%]">
+      </div>
+    </div>
+  </div>
+  </>
+      )}
   <form className="grid gap-y-12" method='POST' action={`${process.env.BASE_URI}/api/auth/register`} onSubmit={register}>
   {error !== '' && (
                       <div className="w-full text-xl text-center relative right-24">

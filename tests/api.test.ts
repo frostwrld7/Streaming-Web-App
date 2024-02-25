@@ -1,11 +1,23 @@
 import {describe, expect, test} from '@jest/globals';
 
-const getAllFilms = () => {
-    fetch('/api/films/all')
+const getAllFilms = async () => {
+  try {
+    const response = await fetch('http://localhost:3000/api/films/all', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      const responseJson = await response.json()
+      return responseJson
+  } catch (err) {
+    return err
+  }
 }
 
+
 describe('return all films', () => {
-  test('adds 1 + 2 to equal 3', () => {
-    expect(1 + 2).toBe(3);
+  test(getAllFilms, async () => {
+    expect(await getAllFilms()).toEqual({error: 'Unauthorized.'});
   });
 });

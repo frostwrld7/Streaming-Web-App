@@ -38,6 +38,13 @@ export async function GET(req: NextApiRequest, res: NextApiResponse) {
           'Content-Type': 'application/json',
         },
       });
+    } else {
+      return new NextResponse(JSON.stringify({ error: 'Aucun film trouvé.' }), {
+        status: 400,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
     }
   } catch (e) {
     console.log({ e });
