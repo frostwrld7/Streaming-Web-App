@@ -13,8 +13,8 @@ import { PutObjectRequest } from "aws-sdk/clients/s3";
 import admins from '@/admins.json' assert { type: 'json' }
 
 AWS.config.update({
-    accessKeyId: 'AKIAXSBEVY3OIHECBK6P',
-    secretAccessKey: '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',
+    accessKeyId: 'accessKeyId',
+    secretAccessKey: 'secretAccessKey',
     region: 'eu-west-3'
   })
 
@@ -70,7 +70,7 @@ const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const fileName = selectedFile?.name as string
     const fileContent = selectedFile
     const params: PutObjectRequest = {
-        Bucket: 'garrosbucket',
+        Bucket: 'BucketName',
         Key: fileName,
         Body: fileContent as unknown as string,
         ACL: 'public-read',
