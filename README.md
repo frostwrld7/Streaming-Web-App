@@ -1,69 +1,53 @@
-# - CineVerse streaming web app
+# CineVerse - Streaming Web App
 
-This app is written in Typescript with React, NextJS and next-auth with Mongodb as the database and prisma as ORM.
+CineVerse is a film streaming application. **Although this project is quite old and the codebase could be improved, it is fully functional and available for free use.**
 
-This app is free for everyone to use.
+## Description
 
-Please note that I'm new to Typescript, React, and NextJS.
+This project is built with TypeScript, React, and Next.js for the frontend, and uses Next-auth for authentication. MongoDB is used as the database, and Prisma serves as the ORM.
 
-# - App Screenshots
-`Home Page :`
-![homePage](https://media.discordapp.net/attachments/972878173488447568/1211258511330385980/Capture_decran_2024-02-25_a_11.28.13.png?ex=65ed8b65&is=65db1665&hm=0de35f0a59d9177833093f23ca541343adc9a74e3f924445cbe80e1b5124c51b&=&format=webp&quality=lossless&width=1100&height=688)
-<br>
-<br>
-<br>
-`Login Page :`
-![loginPage](https://media.discordapp.net/attachments/972878173488447568/1211260291657240616/Capture_decran_2024-02-25_a_11.35.38.png?ex=65ed8d0d&is=65db180d&hm=b1c13511a147396fc30382e9575e8e94afb4060179b7ba7f669a217140b85415&=&format=webp&quality=lossless&width=2106&height=1316)
-<br>
-<br>
-<br>
-`Signup Page :`
-![signupPage](https://media.discordapp.net/attachments/972878173488447568/1211260790166917130/Capture_decran_2024-02-25_a_11.37.35.png?ex=65ed8d84&is=65db1884&hm=c7946a24676495ef68e070d55960894f040e245f3163bc298a8fb4eff30056a8&=&format=webp&quality=lossless&width=1100&height=688)
-<br>
-<br>
-<br>
-`Films Page :`
-![filmsPage](https://media.discordapp.net/attachments/972878173488447568/1211261237367799859/Capture_decran_2024-02-25_a_11.39.07.png?ex=65ed8def&is=65db18ef&hm=7d240437b80a3adf2e34e0cdafbad3e82dfcf6584c044ccc77f961c0626d9ac6&=&format=webp&quality=lossless&width=2106&height=1316)
-<br>
-<br>
-<br>
-`Catalogue Page :`
-![cataloguePage](https://media.discordapp.net/attachments/972878173488447568/1211266051199729704/Capture_decran_2024-02-25_a_11.58.33.png?ex=65ed926a&is=65db1d6a&hm=ca5cd5ad753b4d32cb56f854192461619057ef560abb206e86b07237cb70d120&=&format=webp&quality=lossless&width=1100&height=688)
-<br>
-<br>
-<br>
-`Films per category Page :`
-![filmsPerCategoryPage](https://media.discordapp.net/attachments/972878173488447568/1211266283107258429/Capture_decran_2024-02-25_a_11.59.33.png?ex=65ed92a2&is=65db1da2&hm=00cbe5c238921498fa8fc24914a61f0427f27f6a951bcfa1714d1513a883c6d0&=&format=webp&quality=lossless&width=1100&height=688)
-<br>
-<br>
-<br>
-`Film display Page :`
-![filmsDisplayPage](https://media.discordapp.net/attachments/972878173488447568/1211262414587297842/Capture_decran_2024-02-25_a_11.43.45.png?ex=65ed8f07&is=65db1a07&hm=85329e2aa352499923a8b4e1008c596658730a2a94723e0117ddb2cd6413523a&=&format=webp&quality=lossless&width=1100&height=688)
-<br>
-<br>
-<br>
-`Films display Page 2 :`
-![filmsDisplayPage2](https://media.discordapp.net/attachments/972878173488447568/1211262743555080242/Capture_decran_2024-02-25_a_11.45.11.png?ex=65ed8f56&is=65db1a56&hm=c43c853e865d4cd9addf35fee9dd9ac9d5a496fe8ad8c738bcb6026385b3170c&=&format=webp&quality=lossless&width=1100&height=688)
-<br>
-<br>
-<br>
-`Profile Page :`
-![profilePage](https://media.discordapp.net/attachments/972878173488447568/1211263252575817798/Capture_decran_2024-02-25_a_11.47.05.png?ex=65ed8fcf&is=65db1acf&hm=791a1dd4fe34669a09dbb8ad3b6217d6f603ecb54d898b074c0c8b8c9f0865a0&=&format=webp&quality=lossless&width=1100&height=688)
-<br>
-<br>
-<br>
-`Film Add Page :`
-![filmAddPage](https://media.discordapp.net/attachments/972878173488447568/1211263884607103058/Capture_decran_2024-02-25_a_11.49.57.png?ex=65ed9066&is=65db1b66&hm=4435621ab774882476f1b074564d55067dab15550bc85556e00fb246076acffc&=&format=webp&quality=lossless&width=1100&height=688)
+**Note:** I am still learning TypeScript, React, and Next.js, so the code may have some imperfections.
 
+## Screenshots
 
-# - Technologies Used
-```
-- React
-- NextJS
-- MongoDB
-- Prisma (ORM)
-- Typescript
-- Jest
-- Next-auth
-```
-Feel free to use my project as a starting point for your own and customize it to suit your needs.
+### Home Page
+![Home Page](https://media.discordapp.net/attachments/972878173488447568/1211258511330385980/Capture_decran_2024-02-25_a_11.28.13.png?ex=66e60e25&is=66e4bca5&hm=1e1c37731ed8f734aac8fa5dbd2ca849737fd66387dfca8cfa12b3e98b23dad7&=&format=webp&quality=lossless&width=1123&height=702)
+
+### Login Page
+![Login Page](https://media.discordapp.net/attachments/972878173488447568/1211260291657240616/Capture_decran_2024-02-25_a_11.35.38.png?ex=66e60fcd&is=66e4be4d&hm=724b1642a9904f72bdc89627d882315784777fc55faf7c38bf7034f62d546130&=&format=webp&quality=lossless&width=1123&height=702)
+
+### Signup Page
+![Signup Page](https://media.discordapp.net/attachments/972878173488447568/1211260790166917130/Capture_decran_2024-02-25_a_11.37.35.png?ex=66e61044&is=66e4bec4&hm=379536eb90b436b3bbf16d85249c530f422951bd06a047d1c7b4476b27d86aae&=&format=webp&quality=lossless&width=1123&height=702)
+
+### Films Page
+![Films Page](https://media.discordapp.net/attachments/972878173488447568/1211261237367799859/Capture_decran_2024-02-25_a_11.39.07.png?ex=66e610af&is=66e4bf2f&hm=05be5f06ff9b3baabe3fcc5580173d17465811962bfc6739d4093bbf51eb6dde&=&format=webp&quality=lossless&width=1123&height=702)
+
+### Catalog Page
+![Catalog Page](https://media.discordapp.net/attachments/972878173488447568/1211261564624314368/Capture_decran_2024-02-25_a_11.40.41.png?ex=66e610fd&is=66e4bf7d&hm=858972f4fa280ef35078ca5125e567b3166fb6f9b997caeb3e167f846a3bd574&=&format=webp&quality=lossless&width=1123&height=702)
+
+### Films per Category Page
+![Films per Category Page](https://media.discordapp.net/attachments/972878173488447568/1211261903972605982/Capture_decran_2024-02-25_a_11.42.04.png?ex=66e6114e&is=66e4bfce&hm=31809f0f20ab6a2293629bd2f608469afe1e5d7886b2abee69531fd5907483e8&=&format=webp&quality=lossless&width=1123&height=702)
+
+### Film Display Page
+![Film Display Page](https://media.discordapp.net/attachments/972878173488447568/1211262414587297842/Capture_decran_2024-02-25_a_11.43.45.png?ex=66e611c7&is=66e4c047&hm=0a4bc45e825b45b5420a344ff1c1bbb064494708ca46015fa097cad2884a91d0&=&format=webp&quality=lossless&width=1123&height=702)
+
+### Film Display Page 2
+![Film Display Page 2](https://media.discordapp.net/attachments/972878173488447568/1211262743555080242/Capture_decran_2024-02-25_a_11.45.11.png?ex=66e61216&is=66e4c096&hm=3838df81d8b314e8f09121f588f438f72ef47b24410f8bd2d2ffc0ef21d38358&=&format=webp&quality=lossless&width=1123&height=702)
+
+### Profile Page
+![Profile Page](https://media.discordapp.net/attachments/972878173488447568/1211263252575817798/Capture_decran_2024-02-25_a_11.47.05.png?ex=66e6128f&is=66e4c10f&hm=54e6d9bdc5dc1e28bd5d84059c3328a5de88c47698312446f83bac3876b97f3c&=&format=webp&quality=lossless&width=1123&height=702)
+
+### Film Add Page
+![Film Add Page](https://media.discordapp.net/attachments/972878173488447568/1211263884607103058/Capture_decran_2024-02-25_a_11.49.57.png?ex=66e61326&is=66e4c1a6&hm=cc0a5f93f8c7611dce55f5e4e5d13ee211c37d698bcd2d18af15f352c44619c0&=&format=webp&quality=lossless&width=1123&height=702)
+
+## Technologies Used
+
+- **React**
+- **Next.js**
+- **MongoDB**
+- **Prisma (ORM)**
+- **TypeScript**
+- **Jest**
+- **Next-auth**
+
+Feel free to use this project as a starting point for your own and customize it to meet your needs.
